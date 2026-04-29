@@ -1,0 +1,69 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] ---------------< com.serviceconnect:service-connect-hub >---------------
+[INFO] Building Service Connect Hub Backend 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:3.2.3:run (default-cli) > test-compile @ service-connect-hub >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ service-connect-hub ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 6 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ service-connect-hub ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 71 source files with javac [debug release 21] to target\classes
+[WARNING] /D:/fundi AI/service-connect-hub-backend-neon/service-connect-hub-backend/src/main/java/com/serviceconnect/entity/JobNotification.java:[45,32] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /D:/fundi AI/service-connect-hub-backend-neon/service-connect-hub-backend/src/main/java/com/serviceconnect/dto/response/AuthResponse.java:[14,20] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /D:/fundi AI/service-connect-hub-backend-neon/service-connect-hub-backend/src/main/java/com/serviceconnect/service/ServiceRequestService.java:[35,1] Field 'log' already exists.
+[WARNING] /D:/fundi AI/service-connect-hub-backend-neon/service-connect-hub-backend/src/main/java/com/serviceconnect/entity/Technician.java:[13,1] Generating equals/hashCode implementation but without a call to superclass, even though this class does not extend java.lang.Object. If this is intentional, add '@EqualsAndHashCode(callSuper=false)' to your type.
+[INFO] /D:/fundi AI/service-connect-hub-backend-neon/service-connect-hub-backend/src/main/java/com/serviceconnect/config/I18nConfig.java: D:\fundi AI\service-connect-hub-backend-neon\service-connect-hub-backend\src\main\java\com\serviceconnect\config\I18nConfig.java uses or overrides a deprecated API.
+[INFO] /D:/fundi AI/service-connect-hub-backend-neon/service-connect-hub-backend/src/main/java/com/serviceconnect/config/I18nConfig.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ service-connect-hub ---
+[INFO] skip non existing resourceDirectory D:\fundi AI\service-connect-hub-backend-neon\service-connect-hub-backend\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ service-connect-hub ---
+[INFO] Changes detected - recompiling the module! :dependency
+[INFO] 
+[INFO] <<< spring-boot:3.2.3:run (default-cli) < test-compile @ service-connect-hub <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:3.2.3:run (default-cli) @ service-connect-hub ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.3)
+
+2026-04-27T11:36:20.925+03:00  INFO 7708 --- [service-connect-hub] [           main] c.s.ServiceConnectHubApplication         : Starting ServiceConnectHubApplication using Java 21.0.10 with PID 7708 (D:\fundi AI\service-connect-hub-backend-neon\service-connect-hub-backend\target\classes started by HP in D:\fundi AI\service-connect-hub-backend-neon\service-connect-hub-backend)
+2026-04-27T11:36:20.926+03:00 DEBUG 7708 --- [service-connect-hub] [           main] c.s.ServiceConnectHubApplication         : Running with Spring Boot v3.2.3, Spring v6.1.4
+2026-04-27T11:36:20.926+03:00  INFO 7708 --- [service-connect-hub] [           main] c.s.ServiceConnectHubApplication         : No active profile set, falling back to 1 default profile: "default"
+2026-04-27T11:36:20.930+03:00 DEBUG 7708 --- [service-connect-hub] [           main] o.s.boot.SpringApplication               : Loading source class com.serviceconnect.ServiceConnectHubApplication
+2026-04-27T11:36:20.990+03:00 DEBUG 7708 --- [service-connect-hub] [           main] ConfigServletWebServerApplicationContext : Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@54e041a4
+2026-04-27T11:36:21.846+03:00  INFO 7708 --- [service-connect-hub] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-27T11:36:21.867+03:00 DEBUG 7708 --- [service-connect-hub] [           main] o.s.b.a.AutoConfigurationPackages        : @EnableAutoConfiguration was declared on a class in the package 'com.serviceconnect'. Automatic @Repository and @Entity scanning is enabled.
+2026-04-27T11:36:21.940+03:00  INFO 7708 --- [service-connect-hub] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 86 ms. Found 6 JPA repository interfaces.
+2026-04-27T11:36:22.695+03:00 DEBUG 7708 --- [service-connect-hub] [           main] .s.b.w.e.t.TomcatServletWebServerFactory : Code archive: C:\Users\HP\.m2\repository\org\springframework\boot\spring-boot\3.2.3\spring-boot-3.2.3.jar
+2026-04-27T11:36:22.695+03:00 DEBUG 7708 --- [service-connect-hub] [           main] .s.b.w.e.t.TomcatServletWebServerFactory : Code archive: C:\Users\HP\.m2\repository\org\springframework\boot\spring-boot\3.2.3\spring-boot-3.2.3.jar
+2026-04-27T11:36:22.695+03:00 DEBUG 7708 --- [service-connect-hub] [           main] .s.b.w.e.t.TomcatServletWebServerFactory : None of the document roots [src/main/webapp, public, static] point to a directory and will be ignored.
+2026-04-27T11:36:22.717+03:00  INFO 7708 --- [service-connect-hub] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-04-27T11:36:22.732+03:00  INFO 7708 --- [service-connect-hub] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-27T11:36:22.732+03:00  INFO 7708 --- [service-connect-hub] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.19]
+2026-04-27T11:36:22.790+03:00  INFO 7708 --- [service-connect-hub] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-04-27T11:36:22.790+03:00 DEBUG 7708 --- [service-connect-hub] [           main] w.s.c.ServletWebServerApplicationContext : Published root WebApplicationContext as ServletContext attribute with name [org.springframework.web.context.WebApplicationContext.ROOT]
+2026-04-27T11:36:22.797+03:00  INFO 7708 --- [service-connect-hub] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1800 ms
+2026-04-27T11:36:22.948+03:00  INFO 7708 --- [service-connect-hub] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-27T11:36:27.447+03:00  INFO 7708 --- [service-connect-hub] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@634ca3e7
+2026-04-27T11:36:27.451+03:00  INFO 7708 --- [service-connect-hub] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-27T11:36:34.037+03:00  INFO 7708 --- [service-connect-hub] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-04-27T11:36:34.196+03:00  INFO 7708 --- [service-connect-hub] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-04-27T11:36:34.286+03:00  INFO 7708 --- [service-connect-hub] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-04-27T11:36:34.861+03:00  INFO 7708 --- [service-connect-hub] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-27T11:36:37.531+03:00  WARN 7708 --- [service-connect-hub] [           main] o.h.boot.model.internal.EntityBinder     : HHH000457: Joined inheritance hierarchy [com.serviceconnect.entity.User] defined explicit @DiscriminatorColumn.  Legacy Hibernate behavior was to ignore the @DiscriminatorColumn.  However, as part of issue HHH-6911 we now apply the explicit @DiscriminatorColumn.  If you would prefer the legacy behavior, enable the `hibernate.discriminator.ignore_explicit_for_joined` setting (hibernate.discriminator.ignore_explicit_for_joined=true)
+2026-04-27T11:36:40.466+03:00  INFO 7708 --- [service-connect-hub] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
