@@ -98,15 +98,14 @@ public class ServiceRequestService {
                     dto.getLocation().getLat(), dto.getLocation().getLng(), dto.getLocation().getAddress());
         }
 
-        // Immediately kick off matching (now auto-assigns)
+        // Immediately kick off matching. Matching is best-effort here:
+        // the client request should still be created even if matching needs a later retry.
         try {
             triggerMatching(saved);
         } catch (Exception e) {
             log.error("Error during matching for request id={}: {}", saved.getId(), e.getMessage(), e);
-            // Update request status to failed so client knows something went wrong
-            saved.setStatus(ServiceRequest.RequestStatus.failed);
+            saved.setStatus(ServiceRequest.RequestStatus.searching);
             requestRepository.save(saved);
-            throw e;
         }
 
         // Fetch the updated request with assignment details
@@ -526,9 +525,9 @@ public class ServiceRequestService {
         log.info("Selected technician: id={}, name={}, distance={}km (tier used: {})",
                 best.getId(), best.getName(), distance,
                 (!"Unknown".equalsIgnoreCase(clientRegion) && !"Unknown".equalsIgnoreCase(clientDistrict) &&
-                 best.getRegion().equalsIgnoreCase(clientRegion) && best.getDistrict().equalsIgnoreCase(clientDistrict))
+                 clientRegion.equalsIgnoreCase(best.getRegion()) && clientDistrict.equalsIgnoreCase(best.getDistrict()))
                         ? "Tier1-same-district"
-                        : (!"Unknown".equalsIgnoreCase(clientRegion) && best.getRegion().equalsIgnoreCase(clientRegion))
+                        : (!"Unknown".equalsIgnoreCase(clientRegion) && clientRegion.equalsIgnoreCase(best.getRegion()))
                                 ? "Tier2-same-region"
                                 : (distance > 0 && distance <= 50.0) ? "Tier3-GPS-radius" : "Tier4-global");
 
@@ -548,9 +547,9 @@ public class ServiceRequestService {
         log.info("Request id={} auto-assigned to technician id={}, distance={}km, status={}, tier={}",
                 req.getId(), best.getId(), distance, req.getStatus(),
                 (!"Unknown".equalsIgnoreCase(clientRegion) && !"Unknown".equalsIgnoreCase(clientDistrict) &&
-                 best.getRegion().equalsIgnoreCase(clientRegion) && best.getDistrict().equalsIgnoreCase(clientDistrict))
+                 clientRegion.equalsIgnoreCase(best.getRegion()) && clientDistrict.equalsIgnoreCase(best.getDistrict()))
                         ? "Tier1-exact-district"
-                        : (!"Unknown".equalsIgnoreCase(clientRegion) && best.getRegion().equalsIgnoreCase(clientRegion))
+                        : (!"Unknown".equalsIgnoreCase(clientRegion) && clientRegion.equalsIgnoreCase(best.getRegion()))
                                 ? "Tier2-same-region"
                                 : (distance > 0 && distance <= 50.0) ? "Tier3-GPS-radius" : "Tier4-global");
     }
