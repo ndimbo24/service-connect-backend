@@ -48,6 +48,10 @@ public class PaymentGatewayService {
         }
 
         String orderId = UUID.randomUUID().toString();
+        String pesapalIpnId = pesapalProperties.getIpnId();
+        if (pesapalIpnId == null || pesapalIpnId.isBlank()) {
+            throw new BadRequestException("PesaPal IPN ID is not configured. Register an IPN and set PESAPAL_IPN_ID.");
+        }
 
         TechnicianPayment payment = TechnicianPayment.builder()
                 .technicianId(technician.getId())
@@ -64,7 +68,7 @@ public class PaymentGatewayService {
         pesapalRequest.setAmount(amount);
         pesapalRequest.setDescription(request.getType().name().equals("REGISTRATION") ? "Technician Registration Fee" : "Monthly Subscription");
         pesapalRequest.setCallbackUrl(pesapalProperties.getCallbackUrl());
-        pesapalRequest.setNotificationId(orderId); // Use orderId as notificationId
+        pesapalRequest.setNotificationId(pesapalIpnId);
 
         PesapalApiDtos.SubmitOrderRequest.BillingAddress billingAddress = new PesapalApiDtos.SubmitOrderRequest.BillingAddress();
         billingAddress.setEmailAddress(userEmail != null ? userEmail : technician.getEmail());

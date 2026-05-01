@@ -11,6 +11,7 @@ public class PesapalProperties {
     private String consumerKey;
     private String consumerSecret;
     private String baseUrl;
+    private String ipnId;
     private String ipnUrl;
     private String callbackUrl;
     private Double registrationFeeAmount;
