@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -29,14 +29,13 @@ public interface TechnicianRepository extends JpaRepository<Technician, Long> {
             """)
     List<Technician> findAvailableTechniciansWithServiceTypes(
             @Param("availability") Technician.Availability availability,
-            @Param("now") LocalDateTime now);
+            @Param("now") LocalDate now);
 
     List<Technician> findByAccountStatus(Technician.AccountStatus accountStatus);
 
-    // ← FIXED: changed LocalDate to LocalDateTime
     List<Technician> findByAccountStatusAndSubscriptionExpiryAtBefore(
             Technician.AccountStatus accountStatus,
-            LocalDateTime expiryTime);
+            LocalDate expiryDate);
 
     @Query("""
             SELECT t FROM Technician t
@@ -50,7 +49,7 @@ public interface TechnicianRepository extends JpaRepository<Technician, Long> {
     List<Technician> findAvailableByRegionAndDistrict(
             @Param("region") String region,
             @Param("district") String district,
-            @Param("now") LocalDateTime now);
+            @Param("now") LocalDate now);
 
     @Query("""
             SELECT t FROM Technician t
@@ -62,7 +61,7 @@ public interface TechnicianRepository extends JpaRepository<Technician, Long> {
             """)
     List<Technician> findAvailableByRegion(
             @Param("region") String region,
-            @Param("now") LocalDateTime now);
+            @Param("now") LocalDate now);
 
     @Query("""
             SELECT t FROM Technician t
@@ -83,7 +82,7 @@ public interface TechnicianRepository extends JpaRepository<Technician, Long> {
             @Param("lat") Double lat,
             @Param("lng") Double lng,
             @Param("maxDistanceKm") Double maxDistanceKm,
-            @Param("now") LocalDateTime now);
+            @Param("now") LocalDate now);
 
     @Query("""
             SELECT t FROM Technician t
@@ -95,7 +94,7 @@ public interface TechnicianRepository extends JpaRepository<Technician, Long> {
             """)
     List<Technician> findAvailableByServiceTypeOnly(
             @Param("serviceType") String serviceType,
-            @Param("now") LocalDateTime now);
+            @Param("now") LocalDate now);
 
     @Query("""
             SELECT t FROM Technician t

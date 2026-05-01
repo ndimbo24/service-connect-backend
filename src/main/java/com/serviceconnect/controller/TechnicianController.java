@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,9 +76,9 @@ public class TechnicianController {
 
         if (lat != null && lng != null && maxDistanceKm != null) {
             available = technicianRepository.findAvailableByServiceTypeAndLocation(
-                    serviceType != null ? serviceType : "", lat, lng, maxDistanceKm, LocalDateTime.now());
+                    serviceType != null ? serviceType : "", lat, lng, maxDistanceKm, LocalDate.now());
         } else if (serviceType != null) {
-            available = technicianRepository.findAvailableByRegionAndDistrict("Dar es Salaam", "Kinondoni", LocalDateTime.now())
+            available = technicianRepository.findAvailableByRegionAndDistrict("Dar es Salaam", "Kinondoni", LocalDate.now())
                     .stream()
                     .filter(t -> t.getServiceTypes() != null && t.getServiceTypes().contains(serviceType))
                     .collect(Collectors.toList());

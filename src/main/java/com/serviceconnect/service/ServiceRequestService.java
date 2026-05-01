@@ -25,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -231,7 +232,7 @@ public class ServiceRequestService {
     public int processNewlyAvailableTechnicians() {
         List<Technician> availableTechnicians = technicianRepository.findAvailableTechniciansWithServiceTypes(
                 Technician.Availability.available,
-                LocalDateTime.now());
+                LocalDate.now());
         if (availableTechnicians.isEmpty()) {
             log.debug("No available technicians found for re-matching.");
             return 0;
@@ -460,7 +461,7 @@ public class ServiceRequestService {
 
         // ── Tier 1: Same district exact match ──────────────────────────────────
         if (!"Unknown".equalsIgnoreCase(clientRegion) && !"Unknown".equalsIgnoreCase(clientDistrict)) {
-            candidates = technicianRepository.findAvailableByRegionAndDistrict(clientRegion, clientDistrict, LocalDateTime.now());
+            candidates = technicianRepository.findAvailableByRegionAndDistrict(clientRegion, clientDistrict, LocalDate.now());
             log.info("Tier 1 (same district): {} candidates", candidates.size());
 
             if (!candidates.isEmpty()) {
@@ -472,7 +473,7 @@ public class ServiceRequestService {
         // ── Tier 2: Same region (any district) ─────────────────────────────────
         if (candidates.isEmpty() && !"Unknown".equalsIgnoreCase(clientRegion)) {
             log.info("Tier 1 returned empty. Trying Tier 2: same region, any district");
-            candidates = technicianRepository.findAvailableByRegion(clientRegion, LocalDateTime.now());
+            candidates = technicianRepository.findAvailableByRegion(clientRegion, LocalDate.now());
             log.info("Tier 2 (same region): {} candidates", candidates.size());
 
             if (!candidates.isEmpty()) {
@@ -485,14 +486,14 @@ public class ServiceRequestService {
         if (candidates.isEmpty()) {
             log.info("Tier 2 returned empty. Trying Tier 3: GPS radius within 20km");
             candidates = technicianRepository.findAvailableByServiceTypeAndLocation(
-                    targetServiceType, req.getLocationLat(), req.getLocationLng(), 20.0, LocalDateTime.now());
+                    targetServiceType, req.getLocationLat(), req.getLocationLng(), 20.0, LocalDate.now());
             log.info("Tier 3 (GPS radius): {} candidates", candidates.size());
         }
 
         // ── Tier 4: Global fallback (any available technician with service type) ──
         if (candidates.isEmpty()) {
             log.warn("Tier 3 returned empty. Trying Tier 4: ANY available technician with service type={}", targetServiceType);
-            candidates = technicianRepository.findAvailableByServiceTypeOnly(targetServiceType, LocalDateTime.now());
+            candidates = technicianRepository.findAvailableByServiceTypeOnly(targetServiceType, LocalDate.now());
             log.info("Tier 4 (global): {} candidates", candidates.size());
         }
 

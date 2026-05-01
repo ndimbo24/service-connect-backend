@@ -9,7 +9,7 @@ import com.serviceconnect.util.LocationMapper;
 import com.serviceconnect.util.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Comparator;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,7 +61,7 @@ public class TechnicianSearchController {
         }
 
         List<Technician> technicians = technicianRepository.findAvailableByRegionAndDistrict(
-                rd.region(), rd.district(), LocalDateTime.now());
+                rd.region(), rd.district(), LocalDate.now());
 
         List<Technician> sortedTechnicians = technicians.stream()
                 .sorted(Comparator.comparingDouble(t -> getDistanceKm(lat, lng, t)))
