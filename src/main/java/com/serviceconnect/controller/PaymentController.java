@@ -37,8 +37,9 @@ public class PaymentController {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
 
+    // ── 1. Initiate Payment ──────────────────────────────────────────
     @PostMapping("/initiate")
-    @PreAuthorize("hasRole(\'TECHNICIAN\')")
+    @PreAuthorize("hasRole('TECHNICIAN')")
     public ResponseEntity<ApiResponse<InitiatePaymentResponse>> initiatePayment(
             @AuthenticationPrincipal UserPrincipal principal,
             @Valid @RequestBody InitiatePaymentRequest request) {
@@ -50,6 +51,18 @@ public class PaymentController {
         return ResponseEntity.ok(ApiResponse.success("Payment initiated", response));
     }
 
+    // ── 2. Register IPN (Admin only - call once to get IPN ID) ───────
+    @PostMapping("/register-ipn")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> registerIpn() {
+        String ipnId = pesapalService.registerIpn();
+        return ResponseEntity.ok(Map.of(
+            "ipn_id", ipnId,
+            "message", "Copy this IPN ID and add it to Railway as PESAPAL_IPN_ID"
+        ));
+    }
+
+    // ── 3. Webhook (PesaPal calls this automatically) ────────────────
     @PostMapping("/webhook")
     public ResponseEntity<String> handleWebhook(
             @RequestBody PesapalApiDtos.IpnNotification payload,
@@ -76,16 +89,19 @@ public class PaymentController {
         }
 
         try {
-            // Query payment status from Pesapal
-            PesapalApiDtos.QueryPaymentStatusResponse statusResponse = pesapalService.queryPaymentStatus(orderTrackingId);
+            // Query payment status from PesaPal
+            PesapalApiDtos.QueryPaymentStatusResponse statusResponse =
+                pesapalService.queryPaymentStatus(orderTrackingId);
+
             if (statusResponse == null || !"200".equals(statusResponse.getStatus())) {
-                log.warn("Webhook: Pesapal API query failed for orderTrackingId: {}", orderTrackingId);
+                log.warn("Webhook: PesaPal API query failed for orderTrackingId: {}", orderTrackingId);
                 return ResponseEntity.ok("Query failed");
             }
 
             String paymentStatusCode = statusResponse.getPaymentStatusCode();
             if (!"1".equals(paymentStatusCode)) { // 1 = Completed
-                log.info("Webhook: Payment not completed, status code: {} for orderTrackingId: {}", paymentStatusCode, orderTrackingId);
+                log.info("Webhook: Payment not completed, status code: {} for orderTrackingId: {}",
+                    paymentStatusCode, orderTrackingId);
                 return ResponseEntity.ok("Payment not completed");
             }
 
@@ -97,6 +113,7 @@ public class PaymentController {
 
             log.info("Webhook: Payment processed successfully for orderTrackingId: {}", orderTrackingId);
             return ResponseEntity.ok("Payment processed");
+
         } catch (Exception e) {
             log.error("Webhook processing error for orderTrackingId: {}", orderTrackingId, e);
             return ResponseEntity.ok("Webhook received");
