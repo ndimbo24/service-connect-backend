@@ -62,7 +62,25 @@ public class PaymentController {
         ));
     }
 
-    // ── 3. Webhook (PesaPal calls this automatically) ────────────────
+    // ── 3. Test PesaPal Connection (temporary - remove after getting IPN ID) ──
+    @GetMapping("/test-pesapal")
+    public ResponseEntity<?> testPesapal() {
+        try {
+            String token = pesapalService.getToken();
+            return ResponseEntity.ok(Map.of(
+                "success", true,
+                "message", "PesaPal connected successfully!",
+                "token_preview", token.substring(0, 20) + "..."
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.ok(Map.of(
+                "success", false,
+                "error", e.getMessage()
+            ));
+        }
+    }
+
+    // ── 4. Webhook (PesaPal calls this automatically) ────────────────
     @PostMapping("/webhook")
     public ResponseEntity<String> handleWebhook(
             @RequestBody PesapalApiDtos.IpnNotification payload,
@@ -99,7 +117,7 @@ public class PaymentController {
             }
 
             String paymentStatusCode = statusResponse.getPaymentStatusCode();
-            if (!"1".equals(paymentStatusCode)) { // 1 = Completed
+            if (!"1".equals(paymentStatusCode)) {
                 log.info("Webhook: Payment not completed, status code: {} for orderTrackingId: {}",
                     paymentStatusCode, orderTrackingId);
                 return ResponseEntity.ok("Payment not completed");

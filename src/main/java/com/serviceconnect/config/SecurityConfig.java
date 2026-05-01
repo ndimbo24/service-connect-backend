@@ -51,6 +51,7 @@ public class SecurityConfig {
                 .requestMatchers("/actuator/health", "/actuator/info", "/error").permitAll()
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/api/payments/webhook").permitAll()
+                .requestMatchers("/api/payments/test-pesapal").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
