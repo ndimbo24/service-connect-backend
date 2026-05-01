@@ -71,12 +71,23 @@ public class PaymentGatewayService {
         pesapalRequest.setNotificationId(pesapalIpnId);
 
         PesapalApiDtos.SubmitOrderRequest.BillingAddress billingAddress = new PesapalApiDtos.SubmitOrderRequest.BillingAddress();
-        billingAddress.setEmailAddress(userEmail != null ? userEmail : technician.getEmail());
-        billingAddress.setPhoneNumber(userPhone != null ? userPhone : technician.getPhone());
-        String fullName = userName != null ? userName : technician.getName();
+        String email = firstNonBlank(userEmail, technician.getEmail(), "payments@serviceconnect.co.tz");
+        String phone = normalizePhone(firstNonBlank(userPhone, technician.getPhone(), ""));
+        if (phone.isBlank() && email.isBlank()) {
+            throw new BadRequestException("A phone number or email address is required before starting payment.");
+        }
+
+        billingAddress.setEmailAddress(email);
+        billingAddress.setPhoneNumber(phone);
+        String fullName = firstNonBlank(userName, technician.getName(), "Service Connect User");
         String[] nameParts = fullName.split(" ", 2);
-        billingAddress.setFirstName(nameParts[0]);
-        billingAddress.setLastName(nameParts.length > 1 ? nameParts[1] : "");
+        billingAddress.setFirstName(firstNonBlank(nameParts[0], "Service"));
+        billingAddress.setLastName(firstNonBlank(nameParts.length > 1 ? nameParts[1] : "", "Connect"));
+        billingAddress.setLine1(firstNonBlank(technician.getLocationAddress(), technician.getStreet(), "Tanzania"));
+        billingAddress.setCity(firstNonBlank(technician.getDistrict(), technician.getRegion(), "Dar es Salaam"));
+        billingAddress.setState("TZ");
+        billingAddress.setPostalCode("00000");
+        billingAddress.setZipCode("00000");
         pesapalRequest.setBillingAddress(billingAddress);
 
         PesapalApiDtos.SubmitOrderResponse response = pesapalService.submitOrder(pesapalRequest);
@@ -164,6 +175,23 @@ public class PaymentGatewayService {
         return type == InitiatePaymentRequest.PaymentType.REGISTRATION
                 ? TechnicianPayment.PaymentType.REGISTRATION
                 : TechnicianPayment.PaymentType.MONTHLY_SUBSCRIPTION;
+    }
+
+    private String firstNonBlank(String... values) {
+        for (String value : values) {
+            if (value != null && !value.isBlank()) {
+                return value.trim();
+            }
+        }
+        return "";
+    }
+
+    private String normalizePhone(String phone) {
+        String digits = phone == null ? "" : phone.replaceAll("\\D", "");
+        if (digits.length() == 10 && digits.startsWith("0")) {
+            return "255" + digits.substring(1);
+        }
+        return digits;
     }
 
     @Transactional
